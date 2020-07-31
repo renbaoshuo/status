@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import htmr from 'htmr';
 import ReactTooltip from 'react-tooltip';
 import UptimeBlock from './uptime-block';
 import Link from './link';
@@ -8,23 +9,28 @@ const UptimeItem = (props) => {
 
   const { ShowLink, CountDays } = window.Config;
   const { monitor } = props;
-  const initial = monitor.daily[monitor.daily.length - 1].date;
   const status = {
     ok: '正常',
     down: '无法访问',
     unknow: '未知'
   };
 
-  const total = monitor.total.times
-    ? `最近 ${CountDays} 天故障 ${monitor.total.times} 次，累计 ${formatDuration(monitor.total.duration)}，平均可用率 ${monitor.average}%`
-    : `最近 ${CountDays} 天可用率 ${monitor.average}%`;
+  const total = useMemo(() => {
+    return monitor.total.times
+      ? `最近 ${CountDays} 天故障 ${monitor.total.times} 次，累计 ${formatDuration(monitor.total.duration)}，平均可用率 ${monitor.average}%`
+      : `最近 ${CountDays} 天可用率 ${monitor.average}%`;
+  }, [CountDays, monitor]);
+
+  const initial = useMemo(() => {
+    return monitor.daily[monitor.daily.length - 1].date;
+  }, [monitor]);
 
   return (
     <div className="item">
       <div className="meta">
         <div className="info">
-          <span className="name">{convert(monitor.name)}</span>
-          {ShowLink && <Link className="link" to={monitor.url} text={monitor.name} target="_blank" />}
+          <span className="name">{htmr(monitor.name)}</span>
+          {ShowLink && <Link className="link" to={monitor.url} text={htmr(monitor.name)} target="_blank" />}
         </div>
         <div className={`status ${monitor.status}`}>{status[monitor.status]}</div>
       </div>
@@ -41,17 +47,6 @@ const UptimeItem = (props) => {
       </div>
     </div>
   );
-}
-
-function convert(str){ 
-  str = str.replace(/(\\u)(\w{1,4})/gi,function($0){ 
-      return (String.fromCharCode(parseInt((escape($0).replace(/(%5Cu)(\w{1,4})/g,"$2")),16))); 
-  }).replace(/(&#x)(\w{1,4});/gi,function($0){ 
-      return String.fromCharCode(parseInt(escape($0).replace(/(%26%23x)(\w{1,4})(%3B)/g,"$2"),16)); 
-  }).replace(/(&#)(\d{1,6});/gi,function($0){ 
-      return String.fromCharCode(parseInt(escape($0).replace(/(%26%23)(\d{1,6})(%3B)/g,"$2"))); 
-  }); 
-  return str; 
 }
 
 export default UptimeItem;

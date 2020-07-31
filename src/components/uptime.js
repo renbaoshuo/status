@@ -10,7 +10,7 @@ const Uptime = (props) => {
 
   useEffect(() => {
     GetMonitors(apikey, CountDays).then(setMonitors);
-  }, [apikey]);
+  }, [apikey, CountDays]);
 
   return monitors ? monitors.map(item => (
     <UptimeItem key={item.id} monitor={item} />
