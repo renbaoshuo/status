@@ -1,7 +1,7 @@
 // 配置
 window.Config = {
     // 站点名
-    SiteName: "站点状态",
+    SiteName: "Site Status",
 
     // 站点链接
     SiteUrl: "https://renbaoshuo.github.io/status/",
