@@ -10,9 +10,32 @@ export const formatDuration = (seconds) => {
       m = parseInt(m % 60);
     }
   }
-  let text = `${s} 秒`;
-  if (m > 0) text = `${m} 分 ${text}`;
-  if (h > 0) text = `${h} 小时 ${text}`;
+  let text = "";
+
+  if (s === 1) { 
+    text = `${s} second`; 
+  } else { 
+    text = `${s} seconds`; 
+  }
+
+  if (m > 0) {
+    // text = `${m}m${text}`;
+    if (m === 1) {
+      text = `${m} minute and ${text}`;
+    } else {
+      text = `${m} minutes and ${text}`;
+    }
+  }
+
+  if(h > 0) {
+    // text = `${h}h${text}`;
+    if (h === 1) {
+      text = `${h} hour and ${text}`;
+    } else {
+      text = `${h} hours and ${text}`;
+    }
+  }
+
   return text;
 }
 

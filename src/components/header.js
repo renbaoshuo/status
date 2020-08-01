@@ -8,7 +8,7 @@ const Header = () => {
       <h1 class="project-name">{SiteName}</h1>
       <h2 class="project-tagline"></h2>
       {Navi.map((item, index) => (
-        <Link key={index} text={item.text} to={item.url} target="_self" class="btn" />
+        <Link key={index} text={item.text} to={item.url} target="_self" className="btn" />
       ))}
     </header>
   );
